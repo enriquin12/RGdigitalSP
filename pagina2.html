@@ -28,9 +28,10 @@
     background-position: center top;
     background-size: cover;
     z-index: 0;
+    pointer-events: none; /* garante que cliques alcancem os hotspots */
   }
 
-  /* camada para hotspots e texto */
+  /* camada para hotspots e elementos UI */
   .ui {
     position: relative;
     z-index: 1;
@@ -74,27 +75,39 @@
     min-height:44px;
   }
 
-  /* área do rodapé com "Última atualização em:" e o autenticador */
+  /* -------------- AQUI ESTÁ A MUDANÇA PRINCIPAL --------------
+     A linha de última atualização foi transformada em fixed para
+     impedir qualquer movimento vertical. Ela tem espaçamento igual
+     das duas bordas (left e right iguais) e o conteúdo interno foi
+     deslocado levemente para a direita mantendo o mesmo padding
+     nas duas bordas.
+  ----------------------------------------------------------------*/
   .last-row {
-    position: absolute;
-    left: 6%;
-    bottom: 12.2%;
-    color: #000;
+    position: fixed; /* fixo na tela, não arrastável */
+    left: 6%;        /* espaçamento igual nas laterais */
+    right: 6%;
+    bottom: calc(env(safe-area-inset-bottom) + 12px); /* respeita área segura */
+    z-index: 2;
+    pointer-events: none; /* não captura cliques */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* alinhamento inicial do texto */
+    gap: 8px;
     /* fonte e tamanho aproximados ao modelo */
     font-size: 13px;
     font-weight: 400;
+    color: #000;
     line-height: 1;
-    pointer-events: none;
-    z-index:2;
-    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* deslocamento visual interno para mover o texto um pouco à direita
+       sem alterar o espaçamento simétrico das bordas */
+    padding-left: 6px;
   }
 
-  .auth {
-    display:inline-block;
-    margin-left:8px;
-    font-weight:600; /* negrito como no modelo */
-    font-size:13px;
+  .last-row .auth {
+    font-weight: 600; /* negrito como no modelo */
+    font-size: 13px;
     pointer-events: none;
     font-family: inherit;
   }
@@ -103,7 +116,7 @@
   @media (max-width:360px) {
     #btn-back { top:3.2%; left:4.2%; width:11%; height:7.6%; }
     #btn-verso { top:6.2%; left:51%; width:17%; height:7.6%; transform:translateX(-9%); }
-    .last-row { left:5%; bottom:10.6%; font-size:12px; }
+    .last-row { left: 5%; right: 5%; bottom: calc(env(safe-area-inset-bottom) + 10px); font-size:12px; padding-left: 4px; }
   }
 
   @media (min-width:900px) {
@@ -121,7 +134,7 @@
     <!-- botão invisível Verso -->
     <button id="btn-verso" class="hotspot" aria-label="Abrir verso" onclick="location.href='pagina3.html'"></button>
 
-    <!-- Texto de última atualização + autenticador (estático visual, autenticado por JS) -->
+    <!-- Texto de última atualização + autenticador (fixo e não arrastável) -->
     <div class="last-row" aria-hidden="false">
       <span>Última atualização em:</span>
       <span id="auth-timestamp" class="auth">carregando...</span>
@@ -160,9 +173,10 @@
   // inicializa ao carregar a página
   window.addEventListener('load', function(){
     setAuthTimestamp();
-    // se quiser atualização contínua, descomente a linha abaixo
+    // se quiser atualização contínua (a cada minuto), descomente:
     // window.setInterval(setAuthTimestamp, 60000);
   });
 </script>
 </body>
 </html>
+
