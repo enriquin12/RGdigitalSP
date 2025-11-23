@@ -1,136 +1,128 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Página 1 - Carteira</title>
-<style>
-  :root { --vh: 100vh; }
-  html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-user-select: none;
-    user-select: none;
-    touch-action: manipulation;
-    background-color: #ffffff;
-  }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Minha Carteira</title>
 
-  /* usa uma camada fixa que cobre todo o viewport para evitar "barras" */
-  .bg {
-    position: fixed;
-    inset: 0; /* top:0; right:0; bottom:0; left:0; */
-    background-image: url('pagina1.jpeg');
-    background-repeat: no-repeat;
-    background-position: center top;
-    background-size: cover;
-    -webkit-background-size: cover;
-    z-index: 0;
-  }
+  <!-- PWA / iOS -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
 
-  /* container para hotspots posicionados sobre o fundo */
-  .container {
-    position: relative;
-    z-index: 1;
-    min-height: calc(var(--vh));
-    width: 100%;
-    box-sizing: border-box;
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-    padding-bottom: env(safe-area-inset-bottom);
-  }
+  <!-- CSS básico (já otimizado para iPhone 13 layout com fundo preenchendo a tela) -->
+  <style>
+    :root { --vh: 100vh; }
 
-  /* hotspots invisíveis */
-  .hotspot {
-    position: absolute;
-    background: rgba(255,0,0,0);
-    border: none;
-    padding: 0;
-    margin: 0;
-    -webkit-tap-highlight-color: transparent;
-    cursor: pointer;
-  }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      background: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
 
-  /* Botão invisível cobrindo o retângulo branco (RG, nome, número).
-     Valores calibrados para a foto enviada (iPhone 13). Ajuste se necessário. */
-  #btn-page2 {
-    top: 28.9%;
-    left: 6.0%;
-    width: 88.0%;
-    height: 15.6%;
-    min-width: 44px;
-    min-height: 44px;
-  }
+    /* camada de fundo fixa que preenche todo o viewport (evita bordas pretas) */
+    .bg {
+      position: fixed;
+      inset: 0;
+      background-image: url('pagina1.jpeg');
+      background-repeat: no-repeat;
+      background-position: center top;
+      background-size: cover;
+      -webkit-background-size: cover;
+      z-index: 0;
+      pointer-events: none; /* importante: deixa clicks passarem para os hotspots */
+    }
 
-  /* pequenas telas */
-  @media (max-width: 360px) {
+    /* container para hotspots (acima do fundo) */
+    .ui {
+      position: relative;
+      z-index: 1;
+      min-height: calc(var(--vh));
+      width: 100%;
+      box-sizing: border-box;
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* hotspots invisíveis */
+    .hotspot {
+      position: absolute;
+      background: rgba(255,0,0,0);
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Hotspot que cobre o retângulo branco do RG (calibrado para iPhone 13 screenshot) */
     #btn-page2 {
-      top: 27.2%;
-      left: 5.4%;
-      width: 89.2%;
-      height: 17.6%;
+      top: 28.9%;
+      left: 6.0%;
+      width: 88.0%;
+      height: 15.6%;
+      min-width: 44px;
+      min-height: 44px;
     }
-  }
 
-  /* telas grandes: aumenta área mínima de toque */
-  @media (min-width: 900px) {
-    #btn-page2 { min-width: 56px; min-height: 56px; }
-  }
-
-  /* opcional: evitar que o botão apareça fora da área segura no iOS */
-  @media (max-height: 700px) {
-    #btn-page2 { height: calc(15.6% + 1vh); }
-  }
-</style>
-  {
-  "name": "Minha Carteira",
-  "short_name": "Carteira",
-  "description": "Carteira digital com documentos pessoais",
-  "start_url": "/index.html",
-  "scope": "/",
-  "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
-  "icons": [
-    {
-      "src": "/icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+    /* responsividade para telas muito pequenas */
+    @media (max-width: 360px) {
+      #btn-page2 {
+        top: 27.2%;
+        left: 5.4%;
+        width: 89.2%;
+        height: 17.6%;
+      }
     }
-  ]
-}
 
+    /* garante área mínima de toque em telas grandes */
+    @media (min-width: 900px) {
+      #btn-page2 { min-width: 56px; min-height: 56px; }
+    }
+  </style>
 </head>
 <body>
-  <!-- camada de fundo fixa que preenche todo o viewport -->
+  <!-- fundo fixo -->
   <div class="bg" aria-hidden="true"></div>
 
-  <div class="container" role="main" aria-label="Página inicial da carteira">
-    <!-- botão invisível que abre pagina2.html -->
-    <button id="btn-page2" class="hotspot" aria-label="Abrir cartão RG" onclick="location.href='pagina2.html'"></button>
+  <div class="ui" role="main" aria-label="Página inicial da carteira">
+    <!-- Hotspot invisível que navega para pagina2.html -->
+    <!-- Uso de <a> é mais confiável; mantém aparência invisível -->
+    <a id="btn-page2" class="hotspot" href="pagina2.html" aria-label="Abrir página 2"></a>
   </div>
 
-<script>
-  // Corrige 100vh em iOS definindo --vh com a altura real da viewport
-  function setVh() {
-    document.documentElement.style.setProperty('--vh', (window.innerHeight || document.documentElement.clientHeight) + 'px');
-  }
-  setVh();
-  window.addEventListener('resize', setVh);
+  <script>
+    // Corrige 100vh em iOS
+    function setVh(){
+      document.documentElement.style.setProperty('--vh', (window.innerHeight || document.documentElement.clientHeight) + 'px');
+    }
+    setVh();
+    window.addEventListener('resize', setVh);
 
-  // Para debug visual temporário: remova comentário para ver a área do hotspot
-  // document.getElementById('btn-page2').style.background = 'rgba(255,0,0,0.12)';
-</script>
+    // Fallback robusto: garante navegação mesmo se algo bloquear o <a>
+    (function(){
+      const el = document.getElementById('btn-page2');
+      if(!el) return;
+      el.addEventListener('click', function(e){
+        // permite comportamento padrão do link; força navegação se necessário
+        const target = 'pagina2.html';
+        setTimeout(function(){
+          if (location.href.indexOf(target) === -1) {
+            try { window.location.href = target; } catch(err) { window.open(target, '_self'); }
+          }
+        }, 150);
+      }, {passive:false});
+    })();
+  </script>
 </body>
 </html>
