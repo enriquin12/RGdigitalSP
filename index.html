@@ -1,75 +1,72 @@
 <!DOCTYPE html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Página 1 - Carteira</title>
 <style>
-  /* usa a altura real da viewport em iOS via variável JS fallback */
   :root { --vh: 100vh; }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    background: #000;
+  }
+
+  /* Container principal: usa imagem de fundo pagina1.jpeg */
   .container {
     min-height: calc(var(--vh));
+    width: 100%;
+    position: relative;
+    background: url('pagina1.jpeg') no-repeat center top;
+    background-size: cover;
     box-sizing: border-box;
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
     padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
   }
 
-  /* touch improvements */
-  html, body { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-  button.hotspot { -webkit-user-select: none; user-select: none; }
-</style>
-<script>
-  // Corrige 100vh em iOS: define --vh em JS para refletir a altura real da viewport
-  function setVh() {
-    document.documentElement.style.setProperty('--vh', (window.innerHeight || document.documentElement.clientHeight) + 'px');
-  }
-  setVh();
-  window.addEventListener('resize', setVh);
-</script>
-
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Página 1</title>
-<style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .container {
-    background: url('pagina1.jpeg') no-repeat center top;
-    background-size: cover;
-    width: 100%;
-    height: 100vh;
-    position: relative;
-  }
-
-  /* hotspot invisível que cobre o retângulo branco do RG */
+  /* hotspot invisível */
   .hotspot {
     position: absolute;
-    background: rgba(255,0,0,0); /* transparente */
+    background: rgba(255,0,0,0); /* totalmente transparente */
     border: none;
     padding: 0;
     margin: 0;
-    -webkit-user-select: none;
-    user-select: none;
     -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
   }
 
-  /* valores ajustados para o retângulo branco (RG) */
+  /* Valores calibrados para cobrir o retângulo branco do RG */
+  /* Ajuste os percentuais se precisar alinhar com precisão em algum aparelho */
   #btn-page2 {
-    top: 34.5%;
-    left: 6.5%;
-    width: 87%;
-    height: 18.5%;
+    top: 28.6%;
+    left: 5.8%;
+    width: 88.4%;
+    height: 15.6%;
+    min-width: 44px;
+    min-height: 44px;
   }
 
-  /* barra de navegação inferior (consistência visual) */
+  /* alternativa para telas muito pequenas */
+  @media (max-width: 360px) {
+    #btn-page2 {
+      top: 27.0%;
+      left: 5.2%;
+      width: 89.6%;
+      height: 17.8%;
+    }
+  }
+
+  /* barra inferior visual */
   .bottom-nav {
     position: absolute;
-    bottom: 12px;
+    bottom: calc(env(safe-area-inset-bottom) + 8px);
     left: 0;
     width: 100%;
     display: flex;
@@ -86,30 +83,34 @@
     font-size: 13px;
   }
 
-  @media (max-width: 420px) {
-    /* adapta hotspot em telas pequenas */
-    #btn-page2 {
-      top: 32.5%;
-      left: 5.5%;
-      width: 89%;
-      height: 20.5%;
-    }
-    .nav-btn { padding: 6px 10px; font-size: 12px; }
+  @media (min-width: 900px) {
+    #btn-page2 { min-width: 56px; min-height: 56px; }
   }
 </style>
 </head>
 <body>
-  <div class="container" role="main" aria-label="Página inicial">
-    <!-- botão invisível que leva para a página 2 -->
+  <div class="container" role="main" aria-label="Página inicial da carteira">
+    <!-- botão invisível que abre a página 2 (cobre o retângulo branco do RG) -->
     <button id="btn-page2" class="hotspot" aria-label="Abrir cartão RG" onclick="location.href='pagina2.html'"></button>
 
-    <!-- barra de navegação inferior -->
+    <!-- barra de navegação inferior (visual) -->
     <div class="bottom-nav" aria-hidden="false">
       <button class="nav-btn" onclick="location.href='index.html'">Carteira</button>
       <button class="nav-btn" onclick="location.href='pagina2.html'">Serviços</button>
       <button class="nav-btn" onclick="location.href='pagina3.html'">Opções</button>
     </div>
   </div>
+
+<script>
+  // Corrige 100vh em iOS definindo --vh com a altura real da viewport
+  function setVh() {
+    document.documentElement.style.setProperty('--vh', (window.innerHeight || document.documentElement.clientHeight) + 'px');
+  }
+  setVh();
+  window.addEventListener('resize', setVh);
+
+  // Dica: se estiver desalinhado, ajuste estes valores:
+  // #btn-page2 { top: X%; left: Y%; width: Z%; height: W%; }
+</script>
 </body>
 </html>
-
