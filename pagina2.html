@@ -5,22 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Página 2 - Frente</title>
 
-  <!-- PWA / iOS -->
-  <link rel="manifest" href="/manifest.json" />
+  <!-- PWA / iOS (caminhos relativos para GitHub Pages /RGdigitalSP/) -->
+  <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#ffffff" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <style>
-    :root { --vh: 100vh; }
+    :root{--vh:100vh;}
     html,body{height:100%;margin:0;padding:0;background:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;}
-    .bg{position:fixed;inset:0;background-image:url('pagina2.jpeg');background-size:cover;z-index:0;pointer-events:none;}
-    .ui{position:relative;z-index:1;min-height:calc(var(--vh));padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:env(safe-area-inset-bottom);}
+    .bg{position:fixed;inset:0;background-image:url('pagina2.jpeg');background-repeat:no-repeat;background-position:center top;background-size:cover;z-index:0;pointer-events:none;}
+    .ui{position:relative;z-index:1;min-height:calc(var(--vh));width:100%;box-sizing:border-box;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:env(safe-area-inset-bottom);}
     .hotspot{position:absolute;background:rgba(255,0,0,0);border:0;padding:0;margin:0;cursor:pointer;-webkit-tap-highlight-color:transparent;}
     #btn-back{top:2.6%;left:3.6%;width:9.2%;height:6.8%;min-width:44px;min-height:44px;}
     #btn-verso{top:5.2%;left:50.5%;width:14.5%;height:6.2%;transform:translateX(-8%);min-width:44px;min-height:44px;}
     .last-row{position:fixed;left:6%;right:6%;bottom:calc(env(safe-area-inset-bottom)+12px);z-index:2;pointer-events:none;display:flex;align-items:center;gap:8px;font-size:13px;color:#000;padding-left:6px;}
-    .last-row .auth{font-weight:600;}
+    .last-row .auth{font-weight:600;font-size:13px;}
     @media(max-width:360px){#btn-back{top:3.2%;left:4.2%;}#btn-verso{top:6.2%;left:51%;} .last-row{left:5%;right:5%;bottom:calc(env(safe-area-inset-bottom)+10px);font-size:12px;padding-left:4px;}}
     @media(min-width:900px){#btn-back,#btn-verso{min-width:56px;min-height:56px;}}
   </style>
@@ -39,7 +39,7 @@
   </div>
 
   <script>
-    // fix 100vh on iOS
+    // Corrige 100vh no iOS
     function setVh(){ document.documentElement.style.setProperty('--vh', (window.innerHeight || document.documentElement.clientHeight) + 'px'); }
     setVh(); window.addEventListener('resize', setVh);
 
@@ -48,32 +48,26 @@
     function buildTimestamp(date){ const d=two(date.getDate()), m=two(date.getMonth()+1), y=String(date.getFullYear()).slice(-2), hh=two(date.getHours()), mm=two(date.getMinutes()); return `${d}/${m}/${y} - ${hh}:${mm}`; }
     function setAuthTimestamp(){ const el=document.getElementById('auth-timestamp'); if(el) el.textContent = buildTimestamp(new Date()); }
 
-    // Navegação: usar location.assign / location.href — NÃO usar window.open
+    // Navegação relativa usando location.assign (NÃO usar window.open)
     (function(){
       const back = document.getElementById('btn-back');
       if(back){
-        back.addEventListener('click', function(e){
-          e.preventDefault();
-          location.assign('index.html'); // navegação relativa segura
-        }, {passive:false});
+        back.addEventListener('click', function(e){ e.preventDefault(); location.assign('index.html'); }, {passive:false});
       }
       const verso = document.getElementById('btn-verso');
       if(verso){
-        verso.addEventListener('click', function(e){
-          e.preventDefault();
-          location.assign('pagina3.html');
-        }, {passive:false});
+        verso.addEventListener('click', function(e){ e.preventDefault(); location.assign('pagina3.html'); }, {passive:false});
       }
     })();
 
     window.addEventListener('load', function(){ setAuthTimestamp(); });
 
-    // debug: checar standalone
+    // Debug: checar standalone no console
     (function(){ const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches; console.info('Standalone?', isStandalone); })();
 
-    // registra SW na raíz (opcional)
+    // Registra service worker opcional (certifique-se de que /RGdigitalSP/sw.js exista se usar)
     if('serviceWorker' in navigator){
-      navigator.serviceWorker.register('/sw.js').catch(()=>{/* não crítico */});
+      navigator.serviceWorker.register('sw.js').catch(()=>{/* não crítico */});
     }
   </script>
 </body>
