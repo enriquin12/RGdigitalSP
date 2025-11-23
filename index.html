@@ -18,12 +18,13 @@
     background: #000;
   }
 
-  /* container com imagem de fundo (já contém visual da barra inferior) */
+  /* container com imagem de fundo (imagem já contém a barra inferior) */
   .container {
     min-height: calc(var(--vh));
     width: 100%;
     position: relative;
     box-sizing: border-box;
+    /* preserva a área segura inferior para não cortar os ícones da imagem */
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
     padding-bottom: calc(env(safe-area-inset-bottom) + 0px);
@@ -83,7 +84,7 @@
   setVh();
   window.addEventListener('resize', setVh);
 
-  // Se quiser visualizar temporariamente a área do botão para ajuste:
+  // Para debug visual temporário (remova comentário se precisar testar a área do hotspot):
   // document.getElementById('btn-page2').style.background = 'rgba(255,0,0,0.12)';
 </script>
 </body>
